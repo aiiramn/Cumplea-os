@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Para mi Gordooo</title>
+<style>
+  :root {
+    --noche: #14182b;
+    --noche-2: #1d2340;
+    --papel: #f3ead8;
+    --tinta: #2b2a33;
+    --oro: #d4a95a;
+    --vino: #7a2e3f;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    background: radial-gradient(ellipse at 50% 30%, var(--noche-2), var(--noche) 70%);
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--tinta);
+  }
+
+  .escena { position: relative; width: min(92vw, 420px); }
+
+  /* El interruptor (funciona sin JavaScript) */
+  #abrir { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  #abrir:focus-visible ~ .tarjeta { outline: 2px solid var(--oro); outline-offset: 8px; }
+
+  .tarjeta {
+    position: relative; display: block; width: 100%; aspect-ratio: 3 / 4;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: transform .9s cubic-bezier(.6,.05,.2,1);
+  }
+
+  /* Hoja interior */
+  .interior {
+    position: absolute; inset: 0; z-index: 1; overflow-y: auto;
+    border-radius: 4px 14px 14px 4px;
+    padding: 36px 30px;
+    background: linear-gradient(90deg, rgba(0,0,0,.08), transparent 6%), var(--papel);
+    box-shadow: 0 30px 60px rgba(0,0,0,.5);
+  }
+  .interior p {
+    font-size: 1rem; line-height: 1.65; margin-bottom: 13px;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+
+  /* Portada */
+  .portada {
+    position: absolute; inset: 0; z-index: 2;
+    border-radius: 4px 14px 14px 4px;
+    transform-origin: left center;
+    transform: perspective(1400px) rotateY(0deg);
+    transition: transform 1s cubic-bezier(.6,.05,.2,1), opacity .35s ease;
+    background: linear-gradient(145deg, var(--vino), #4d1a28);
+    border: 1px solid rgba(212,169,90,.55);
+    box-shadow: 0 30px 60px rgba(0,0,0,.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 32px; color: var(--papel);
+  }
+  .portada::before {
+    content: ""; position: absolute; inset: 14px;
+    border: 1px solid rgba(212,169,90,.6); border-radius: 2px;
+  }
+  .portada h1 {
+    font-size: clamp(2.4rem, 11vw, 3.4rem); font-weight: 400; font-style: italic;
+    color: var(--oro); line-height: 1.05; margin-bottom: 14px;
+  }
+  .portada p { font-size: 1.05rem; letter-spacing: .04em; opacity: .9; }
+  .portada small { position: absolute; bottom: 34px; font-size: .85rem; opacity: .7; font-style: italic; }
+
+  /* Sello de lacre */
+  .sello {
+    position: absolute; top: 46px; width: 58px; height: 58px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f0d48f, var(--oro) 55%, #9a7330);
+    box-shadow: 0 4px 10px rgba(0,0,0,.45), inset 0 0 0 4px rgba(122,46,63,.25);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--vino); font-size: 1.5rem;
+    transition: transform .35s ease-in, opacity .35s ease-in;
+  }
+
+  /* ---- Estado abierto ---- */
+  #abrir:checked ~ .tarjeta { transform: translateX(8%); }
+  #abrir:checked ~ .tarjeta .sello { transform: scale(1.5) rotate(25deg); opacity: 0; }
+  #abrir:checked ~ .tarjeta .portada {
+    transform: perspective(1400px) rotateY(-115deg);
+    opacity: 0;
+    transition: transform 1s cubic-bezier(.6,.05,.2,1) .3s, opacity .3s ease 1s;
+  }
+  #abrir:checked ~ .tarjeta .interior p { opacity: 1; transform: none; }
+  #abrir:checked ~ .tarjeta .interior p:nth-child(1) { transition-delay: 1.2s; }
+  #abrir:checked ~ .tarjeta .interior p:nth-child(2) { transition-delay: 2s; }
+
+  /* Confeti dorado */
+  .brillo {
+    position: absolute; top: 45%; left: 50%; width: 9px; height: 14px; border-radius: 2px;
+    pointer-events: none; z-index: 10; opacity: 0;
+  }
+  #abrir:checked ~ .brillo {
+    animation: salta 1.8s cubic-bezier(.15,.7,.3,1) forwards;
+    animation-delay: calc(.7s + var(--d));
+  }
+  @keyframes salta {
+    0%   { opacity: 1; transform: translate(0,0) rotate(0); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+  }
+
+  @media (max-width: 480px) {
+    #abrir:checked ~ .tarjeta { transform: none; }
+    .interior { padding: 28px 22px; }
+    .interior p { font-size: .95rem; line-height: 1.55; }
+  }
+</style>
+</head>
+<body>
+  <div class="escena">
+    <input type="checkbox" id="abrir" aria-label="Abrir tarjeta">
+    <label class="tarjeta" for="abrir">
+      <div class="interior">
+        <p>Gordooo, hoy cumples años y quería escribirte algo, no solo mandarte un mensaje con un emoji de tarta. Así que aquí tienes:</p>
+        <p>Llevo toda la vida viéndote trabajar. Nunca me has dado un discurso sobre el esfuerzo ni sobre lo importante que es ganarse las cosas. Simplemente lo hacías, día tras día, estuvieras cansado o no, con ganas o sin ellas. Y creo que esa fue la mejor lección que podías darme, porque no se me olvida: yo aprendí lo que es responsabilidad mirándote a ti. Así que este año te deseo algo que quizá no te dé tiempo a pedirte a ti mismo: descanso del bueno, tardes largas, y la tranquilidad de saber que lo has hecho bien. Feliz cumpleaños.</p>
+      </div>
+      <div class="portada">
+        <div class="sello" aria-hidden="true">♥</div>
+        <h1>Para mi<br>Gordooo</h1>
+        <p>Feliz cumpleaños</p>
+        <small>toca para abrir</small>
+      </div>
+    </label>
+    <span class="brillo" style="--dx:-67px;--dy:93px;--rot:306deg;--d:0.01s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:60px;--dy:-164px;--rot:236deg;--d:0.02s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:-127px;--dy:-46px;--rot:84deg;--d:0.13s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:13px;--dy:184px;--rot:-300deg;--d:0.25s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:116px;--dy:74px;--rot:282deg;--d:0.17s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:214px;--dy:48px;--rot:-310deg;--d:0.29s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:271px;--dy:42px;--rot:-64deg;--d:0.13s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:-221px;--dy:-98px;--rot:213deg;--d:0.24s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:97px;--dy:169px;--rot:294deg;--d:0.06s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:209px;--dy:107px;--rot:217deg;--d:0.02s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:68px;--dy:200px;--rot:77deg;--d:0.23s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:-289px;--dy:23px;--rot:10deg;--d:0.09s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:70px;--dy:-283px;--rot:-111deg;--d:0.02s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:-66px;--dy:163px;--rot:-9deg;--d:0.22s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:-72px;--dy:258px;--rot:-240deg;--d:0.15s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:94px;--dy:119px;--rot:140deg;--d:0.13s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:131px;--dy:-72px;--rot:211deg;--d:0.17s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:127px;--dy:-167px;--rot:351deg;--d:0.11s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:-271px;--dy:-34px;--rot:-290deg;--d:0.25s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:198px;--dy:-112px;--rot:320deg;--d:0.02s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:-21px;--dy:-218px;--rot:231deg;--d:0.30s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:76px;--dy:-197px;--rot:35deg;--d:0.27s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:-171px;--dy:205px;--rot:3deg;--d:0.05s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:97px;--dy:48px;--rot:-66deg;--d:0.04s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:3px;--dy:154px;--rot:148deg;--d:0.02s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:-213px;--dy:30px;--rot:-220deg;--d:0.25s;background:#f0d48f"></span>
+    <span class="brillo" style="--dx:114px;--dy:-170px;--rot:65deg;--d:0.30s;background:#f3ead8"></span>
+    <span class="brillo" style="--dx:-79px;--dy:-215px;--rot:-124deg;--d:0.05s;background:#b34a60"></span>
+    <span class="brillo" style="--dx:73px;--dy:107px;--rot:-122deg;--d:0.00s;background:#d4a95a"></span>
+    <span class="brillo" style="--dx:75px;--dy:-175px;--rot:-72deg;--d:0.00s;background:#f0d48f"></span>
+  </div>
+
+</body>
+</html>
